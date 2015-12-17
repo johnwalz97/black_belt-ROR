@@ -1,7 +1,33 @@
-<h1>Login</h1>
-
-<%= form_tag '/login' do %>
-  Email: <%= text_field_tag :email %>
-  Password: <%= password_field_tag :password %>
-  <%= submit_tag "Submit" %>
-<% end %>
+<div class="container">
+  <div class="row">
+    <div class="lg-col-6 md-col-6 column">
+      <h1>Login</h1>
+      
+      <%= form_tag '/login' do %>
+        Email: <%= text_field_tag :email %>
+        Password: <%= password_field_tag :password %>
+        <%= submit_tag "Submit" %>
+      <% end %>
+    </div>
+    
+    
+    <div class="lg-col-6 md-col-6 column">
+      <h1>Sign Up</h1>
+      
+      <% if flash[:errors] %>
+        <% flash[:errors].each do |error| %>
+          <p style="color: red"><%=error%></p>
+        <% end %>
+      <% end %>
+      
+      
+      <%= form_for :user, url: '/users' do |f| %>
+        Name: <%= f.text_field :name %>
+        Email: <%= f.text_field :email %>
+        Password: <%= f.password_field :password %>
+        Password Confirmation: <%= f.password_field :password_confirmation %>
+        <%= f.submit "Submit" %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>BlackBelt2</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -9,14 +10,14 @@
 <body>
 <ul class='nav'>
   <% if current_user %>
-    <li><a href='/'>Home</a></li>
+    <li style="color: white; font-size: 36px; margin-left: 10px">Hi, <%= current_user.name %></li>
     <ul class='nav' style="float: right">
+      <% if current_page?(:controller => 'shoes') %>
+        <li><a href='/dashboard'>My Dashboard</a></li>
+      <% else %>
+        <li><a href='/'>All Shoes</a></li>
+      <% end %>
       <li><a href='/logout'>Log Out</a></li>
-    </ul>
-  <% else %>
-    <ul class='nav' style='float: right'>
-      <li><a href='/login'>Log In</a></li>
-      <li><a href='/signup'>Sign up</a></li>
     </ul>
   <% end %>
 </ul>

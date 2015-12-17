@@ -1,0 +1,102 @@
+<h3>Sell Product</h3>
+
+<% if flash[:errors] %>
+    <% flash[:errors].each do |error| %>
+        <p style="color: red"><%= error %></p>
+    <% end %>
+<% end %>
+
+<%= form_for :shoe, url: '/shoes' do |f| %>
+  Name: <%= f.text_field :name %>
+  Price: <%= f.number_field :price %>
+  <%= submit_tag "Sell", class: "btn btn-success" %>
+<% end %>
+
+<hr>
+
+<h3>Your products that are not yet sold</h3>
+<table class='table'>
+    <thead>
+        <th>Product</th>
+        <th>Date Posted</th>
+        <th>Amount</th>
+        <th>Action</th>
+    </thead>
+    <tbody>
+        <%
+        total_unsold = 0
+        @shoes.each do |shoe| %>
+            <% if shoe.user.id == current_user.id && shoe.status == nil
+                total_unsold += shoe.price%>
+                <tr>
+                    <td><%= shoe.name %></td>
+                    <td><%= shoe.created_at.strftime("%B %d, %Y") %></td>
+                    <td>$<%= shoe.price %></td>
+                    <td>
+                        <form action='/shoe/delete' method='post'>
+                            <input name="utf8" type="hidden" value="✓">
+                            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+                            <input type="hidden" name="id" value="<%= shoe.id %>">
+                            <input class="btn btn-danger" type="submit" value="Remove">
+                        </form>
+                    </td>
+                </tr>
+            <% end %>
+        <% end %>
+    </tbody>
+</table>
+<p><strong>Total: $<%= total_unsold %></strong></p>
+
+
+<h3>Your Sales</h3>
+<table class="table">
+    <thead>
+        <th>Product</th>
+        <th>Date Bought</th>
+        <th>Buyer</th>
+        <th>Amount</th>
+    </thead>
+    <tbody>
+        <%
+        total_sold = 0
+        @shoes.each do |shoe| %>
+            <% if shoe.user.id == current_user.id && shoe.status == 1
+                total_unsold += shoe.price%>
+                <tr>
+                    <td><%= shoe.name %></td>
+                    <td><%= shoe.updated_at.strftime("%B %d, %Y") %></td>
+                    <td><%= shoe.buyer.name %></td>
+                    <td>$<%= shoe.price %></td>
+                </tr>
+            <% end %>
+        <% end %>
+    </tbody>
+</table>
+<p><strong>Total: $<%= total_sold %></strong></p>
+
+
+<h3>Your Purchases</h3>
+<table class="table">
+    <thead>
+        <th>Product</th>
+        <th>Date Bought</th>
+        <th>Seller</th>
+        <th>Amount</th>
+    </thead>
+    <tbody>
+        <%
+        total_bought = 0
+        @shoes.each do |shoe| %>
+            <% if shoe.status == 1 && shoe.buyer.id == current_user.id
+                total_bought += shoe.price%>
+                <tr>
+                    <td><%= shoe.name %></td>
+                    <td><%= shoe.updated_at.strftime("%B %d, %Y") %></td>
+                    <td><%= shoe.user.name %></td>
+                    <td>$<%= shoe.price %></td>
+                </tr>
+            <% end %>
+        <% end %>
+    </tbody>
+</table>
+<p><strong>Total: $<%= total_bought %></strong></p>

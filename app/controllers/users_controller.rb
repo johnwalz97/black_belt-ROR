@@ -11,7 +11,7 @@ class UsersController < ApplicationController
             redirect_to '/'
         else
             flash[:errors] = user.errors.full_messages
-            redirect_to '/signup'
+            redirect_to '/login'
         end
     end
     
