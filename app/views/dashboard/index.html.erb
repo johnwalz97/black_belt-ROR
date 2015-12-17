@@ -61,7 +61,7 @@
         total_sold = 0
         @shoes.each do |shoe| %>
             <% if shoe.user.id == current_user.id && shoe.status == 1
-                total_unsold += shoe.price%>
+                total_sold += shoe.price%>
                 <tr>
                     <td><%= shoe.name %></td>
                     <td><%= shoe.updated_at.strftime("%B %d, %Y") %></td>
